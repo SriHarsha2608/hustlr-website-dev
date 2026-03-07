@@ -188,6 +188,10 @@ export default function Vetting({
                             "isUnderReview",
                             "isAccepted",
                             "isRejected",
+                            "scores",
+                            "final_score",
+                            "scored_at",
+                            "scoring_cache",
                           ].includes(key),
                       ),
                     )}

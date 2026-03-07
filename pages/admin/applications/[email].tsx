@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { createToken, verifyToken } from "@/src/lib/jwt";
 import { ApplicationStatusCard } from "@/src/components/admin/ApplicationStatusMsg";
 import { StatusUpdateForm } from "@/src/components/admin/ApplicationStatusUpdate";
+import { ScoreSection } from "@/src/components/admin/ScoreBreakdown";
 import Nav from "@/src/components/Nav";
 import { GetVettingProgressResponse } from "@/src/lib/schemas/formSchema";
 import VettingDataDisplay from "@/src/components/vetting/VettingDetails";
@@ -69,6 +70,18 @@ export default function ProjectInfoPage({
           </h1>
 
           <ApplicationStatusCard data={res.data} />
+
+          {/* Scoring Section */}
+          <div className="px-10 max-w-screen-lg mx-auto font-sans">
+            <ScoreSection
+              email={res.data.email}
+              jwtToken={adminJwtToken}
+              initialScores={res.data.scores}
+              initialFinalScore={res.data.final_score}
+              initialScoredAt={res.data.scored_at}
+            />
+          </div>
+
           <div className="p-10 max-w-screen-lg mx-auto font-sans">
             <VettingDataDisplay jwtToken={userJwtToken} data={res.data} />
           </div>

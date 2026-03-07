@@ -23,6 +23,7 @@ import { verifyToken } from "@/src/lib/jwt";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/router";
 import { ArrowLeft } from "lucide-react";
+import { ScoreBadge } from "@/src/components/admin/ScoreBreakdown";
 
 // add getServerSideProps to check for admin session
 export async function getServerSideProps(context: any) {
@@ -177,6 +178,7 @@ export default function AdminPanel({
                     <tr>
                       <th className="py-2">Email</th>
                       <th>Status</th>
+                      <th>Score</th>
                       <th>Stage</th>
                       <th>View</th>
                     </tr>
@@ -193,6 +195,9 @@ export default function AdminPanel({
                             <Skeleton className="h-4 w-24" />
                           </td>
                           <td className="py-2">
+                            <Skeleton className="h-4 w-16" />
+                          </td>
+                          <td className="py-2">
                             <Skeleton className="h-4 w-12" />
                           </td>
                           <td className="py-2">
@@ -206,6 +211,9 @@ export default function AdminPanel({
                           <td className="py-2">{app?.name || app.email}</td>
                           <td className="py-2 capitalize">
                             {app.status ?? "Not Set"}
+                          </td>
+                          <td className="py-2">
+                            <ScoreBadge score={app.final_score} />
                           </td>
                           <td className="py-2">{app.currentStage ?? 0}</td>
                           <td className="py-2">
@@ -223,7 +231,7 @@ export default function AdminPanel({
                     ) : (
                       <tr>
                         <td
-                          colSpan={4}
+                          colSpan={5}
                           className="py-4 text-center text-gray-500"
                         >
                           No applications found

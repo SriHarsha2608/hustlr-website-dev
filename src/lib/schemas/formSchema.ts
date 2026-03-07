@@ -269,7 +269,7 @@ export type SupabaseVettingData = {
   researchPapers?: {
     title: string;
     venue: string;
-    rank: "A*" | "A" | "B" | "C" | "Unranked";
+    rank: "A*" | "A" | "B*" | "B" | "C" | "Unranked";
     year: string;
     verificationLink: string;
   }[];
@@ -292,6 +292,10 @@ export type SupabaseVettingData = {
   // used to determine application status
   status?: ApplicationStatus;
   currentStage?: number;
+  // scoring fields (added by migration 002)
+  scores?: Record<string, any>;
+  final_score?: number;
+  scored_at?: string;
   // second round details
   selectedProjectSanityId?: JSON;
   videoLink?: string;
