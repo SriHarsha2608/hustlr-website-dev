@@ -138,6 +138,8 @@ export function OpenSourceInput({ form }: { form: FormFieldProp }) {
 
     if (!osForm.impactDescription.trim()) {
       errors.impactDescription = "Impact description is required";
+    } else if (osForm.impactDescription.trim().split(/\s+/).filter(Boolean).length > 200) {
+      errors.impactDescription = "Description must be 200 words or less";
     }
 
     if (!osForm.monthsContributing.trim()) {
@@ -386,7 +388,15 @@ export function OpenSourceInput({ form }: { form: FormFieldProp }) {
                     <Textarea
                       value={osForm.impactDescription}
                       onChange={(e) => {
-                        setField("impactDescription", e.target.value);
+                        const words = e.target.value.trim().split(/\s+/).filter(Boolean);
+                        if (words.length > 200) {
+                          const truncated = words.slice(0, 200).join(" ");
+                          setField("impactDescription", truncated);
+                          setFormErrors(prev => ({ ...prev, impactDescription: "Description must be 200 words or less" }));
+                        } else {
+                          setField("impactDescription", e.target.value);
+                          setFormErrors(prev => { const { impactDescription, ...rest } = prev; return rest; });
+                        }
                         e.target.style.height = "auto";
                         e.target.style.height = e.target.scrollHeight + "px";
                       }}
@@ -394,6 +404,9 @@ export function OpenSourceInput({ form }: { form: FormFieldProp }) {
                       className={cn("w-full min-h-[100px] resize-y whitespace-pre-wrap break-words", formErrors.impactDescription && "border-red-500")}
                       rows={4}
                     />
+                    <p className={cn("text-xs mt-1 text-right", osForm.impactDescription.trim().split(/\s+/).filter(Boolean).length >= 200 ? "text-red-500" : "text-gray-400")}>
+                      {osForm.impactDescription.trim().split(/\s+/).filter(Boolean).length} / 200 words
+                    </p>
                     {formErrors.impactDescription && (
                       <p className="text-sm text-red-500 mt-1">{formErrors.impactDescription}</p>
                     )}
