@@ -8,7 +8,7 @@ import { Plus, Trash2, Pencil } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { FormFieldProp } from "../../lib/schemas/formSchema";
 
-const PAPER_RANKS = ["A*", "A", "B", "C", "Unranked"] as const;
+const PAPER_RANKS = ["A*", "A", "B*", "B", "C", "Unranked"] as const;
 const CURRENT_YEAR = new Date().getFullYear();
 const YEARS = Array.from({ length: 25 }, (_, i) => String(CURRENT_YEAR - i));
 

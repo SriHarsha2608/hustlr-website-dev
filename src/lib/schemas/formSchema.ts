@@ -119,7 +119,7 @@ export const formSchema = z.object({
       z.object({
         title: z.string().min(1, "Paper title is required"),
         venue: z.string().min(1, "Journal / conference name is required"),
-        rank: z.enum(["A*", "A", "B", "C", "Unranked"], {
+        rank: z.enum(["A*", "A", "B*", "B", "C", "Unranked"], {
           required_error: "Please select paper rank",
         }),
         year: z.string().min(1, "Publication year is required"),
