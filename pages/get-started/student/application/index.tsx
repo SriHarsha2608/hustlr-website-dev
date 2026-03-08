@@ -319,17 +319,21 @@ export default function ApplicationHomepage({
           )}
 
           {currentStage === 1 &&
+            !vettingData.isComplete &&
             (status === undefined || status === "not_completed") && (
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">
-                    Start your application
+                    {status === "not_completed"
+                      ? "Continue your application"
+                      : "Start your application"}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="mb-4">
-                    Begin by filling out your Stage 1 form. It helps us to
-                    confirm your identity and skillset.
+                    {status === "not_completed"
+                      ? "You have partial progress saved. Continue filling out your Stage 1 form to complete your application."
+                      : "Begin by filling out your Stage 1 form. It helps us to confirm your identity and skillset."}
                   </p>
                   <div className="mt-5">
                     <Link

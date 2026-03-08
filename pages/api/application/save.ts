@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import {
   checkIfExists,
   extractEmailFromAuthHeader,
+  getVettingProgress,
   insertVettingData,
   markAsComplete,
   prepareVettingData,
@@ -45,14 +46,40 @@ export default async function handler(
     const existing = await checkIfExists(data.email);
 
     if (req.query.final === "true") {
+      // Guard against duplicate final submissions
+      if (existing) {
+        const progress = await getVettingProgress(data.email);
+        if (progress.success && progress.data?.isComplete) {
+          return res.status(200).json({ success: true, final: true, alreadyComplete: true });
+        }
+      }
       await markAsComplete(data);
       return res.status(200).json({ success: true, final: true });
     }
 
+    // Don't allow partial saves to overwrite a completed application
+    // (e.g. beacon firing after tab close right after final submit)
     if (existing) {
-      await updateVettingData(data);
+      const progress = await getVettingProgress(data.email);
+      if (progress.success && progress.data?.isComplete) {
+        return res.status(200).json({ success: true, final: false, skipped: true });
+      }
+    }
+
+    // For partial saves: explicitly set status and currentStage so users can
+    // continue filling the form after logout/login. Without this, DB defaults
+    // or stale values can show "application submitted" instead of the form.
+    const partialData = {
+      ...data,
+      status: "not_completed" as const,
+      currentStage: 1,
+      isComplete: false,
+    };
+
+    if (existing) {
+      await updateVettingData(partialData);
     } else {
-      await insertVettingData(data);
+      await insertVettingData(partialData);
     }
 
     return res.status(200).json({ success: true, final: false });
