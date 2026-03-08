@@ -215,7 +215,7 @@ export default function AlgorithmConfigPanel({
         <Button
           type="button"
           onClick={applyChanges}
-          disabled={saving || loading}
+          disabled={saving || loading || Math.abs(totalWeight - 1) >= 0.001}
           className="text-sm"
         >
           {saving ? "Applying..." : "Apply Changes"}

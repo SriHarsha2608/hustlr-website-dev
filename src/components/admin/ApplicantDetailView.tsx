@@ -387,7 +387,20 @@ export default function ApplicantDetailView({
                 </div>
               </div>
               <Button asChild>
-                <a href={resumeMeta.url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={
+                    (() => {
+                      try {
+                        const u = new URL(resumeMeta.url);
+                        return u.protocol === "http:" || u.protocol === "https:" ? resumeMeta.url : "#";
+                      } catch {
+                        return resumeMeta.url.startsWith("/") ? resumeMeta.url : "#";
+                      }
+                    })()
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Download className="mr-2 h-4 w-4" />
                   Download Resume
                 </a>

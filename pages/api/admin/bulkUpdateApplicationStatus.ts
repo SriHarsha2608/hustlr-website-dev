@@ -96,7 +96,7 @@ export default async function handler(
     decisionSource: "admin_override",
     algorithmDecision: normalizedDecisionStatus,
     current_stage: normalizedDecisionStatus,
-    stage_status: normalizedDecisionStatus,
+    stage_status: normalizedDecisionStatus === "accepted" ? "accepted" : normalizedDecisionStatus === "rejected" ? "rejected" : "pending",
     decision_status: normalizedDecisionStatus,
     decision_source: "admin_override",
     resume_decision: normalizedDecisionStatus,
